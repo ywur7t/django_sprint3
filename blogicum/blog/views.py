@@ -14,6 +14,7 @@ def index(request):
         .order_by('-pub_date')[:5]
     )
     context = {'post_list': posts}
+
     return render(request, 'blog/index.html', context)
 
 
@@ -21,18 +22,28 @@ def post_detail(request, id):
 
     post = get_object_or_404(
         Post.objects.select_related('author', 'category', 'location'),
-        id=id, is_published=True)
-    context = {'post': post}
+        id=id,
+        is_published=True)
 
+    if post.pub_date > now() or not post.category.is_published:
+        return render(request, 'blog/404.html', status=404)
+
+    context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
 
-    category = get_object_or_404(Category.objects.filter(
-        is_published=True), slug=category_slug)
+    category = get_object_or_404(Category,
+                                 slug=category_slug,
+                                 is_published=True)
+
     posts = Post.objects.filter(
-        category=category, is_published=True).order_by('-pub_date')
+        category=category,
+        is_published=True,
+        pub_date__lte=now()
+    ).order_by('-pub_date')
+
     context = {
         'category': category,
         'posts': posts,
