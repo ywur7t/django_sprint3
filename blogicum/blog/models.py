@@ -50,7 +50,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(User,  verbose_name='Автор публикации',
+    author = models.ForeignKey(User, verbose_name='Автор публикации',
                                on_delete=models.CASCADE,
                                related_name="comments")
     content = models.TextField()
@@ -72,7 +72,7 @@ class Category(models.Model):
                             unique=True,
                             blank=False)
     is_published = models.BooleanField(
-        verbose_name='Опубликовано',  help_text='''Снимите галочку,
+        verbose_name='Опубликовано', help_text='''Снимите галочку,
         чтобы скрыть публикацию.''',
         default=True,
         blank=False)
