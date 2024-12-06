@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category, Location
+from .models import Post, Category
 from django.utils import timezone
 from django.http import Http404
 
