@@ -6,7 +6,6 @@ from django.http import Http404
 
 def index(request):
 
-
     posts = (
         Post.objects.filter(
             is_published=True,
@@ -22,8 +21,6 @@ def index(request):
 
 
 def post_detail(request, id):
-
-
 
     post = get_object_or_404(
         Post.objects.select_related('author', 'category', 'location'),
@@ -43,8 +40,6 @@ def post_detail(request, id):
 
 
 def category_posts(request, category_slug):
-
-
 
     category = get_object_or_404(
         Category.objects.filter(is_published=True),

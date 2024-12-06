@@ -7,18 +7,21 @@ from django.utils import timezone
 User = get_user_model()
 
 
-
 class Category(models.Model):
 
     title = models.CharField(verbose_name='Заголовок',
                              max_length=256, blank=False)
     description = models.TextField(verbose_name='Описание', blank=False)
     slug = models.SlugField(verbose_name='Идентификатор',
-                            help_text='Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.',
+                            help_text='Идентификатор страницы для URL; '
+                            'разрешены символы латиницы, цифры, дефис и '
+                            'подчёркивание.',
                             unique=True,
                             blank=False)
     is_published = models.BooleanField(
-        verbose_name='Опубликовано', help_text='Снимите галочку, чтобы скрыть публикацию.',
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку,'
+        ' чтобы скрыть публикацию.',
         default=True,
         blank=False)
     created_at = models.DateTimeField(
@@ -38,7 +41,8 @@ class Location(models.Model):
     name = models.CharField(verbose_name='Название места',
                             max_length=256, blank=False)
     is_published = models.BooleanField(
-        verbose_name='Опубликовано', help_text='Снимите галочку, чтобы скрыть публикацию.',
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.',
         default=True,
         blank=False)
     created_at = models.DateTimeField(
@@ -59,10 +63,12 @@ class Post(models.Model):
     title = models.CharField(verbose_name='Заголовок',
                              max_length=256, blank=False)
     text = models.TextField(verbose_name='Текст', blank=False)
-    pub_date = models.DateTimeField(verbose_name='Дата и время публикации',
-                                    auto_now_add=False,
-                                    help_text='Если установить дату и время в будущем — можно делать отложенные публикации.',
-                                    blank=False)
+    pub_date = models.DateTimeField(
+        verbose_name='Дата и время публикации',
+        auto_now_add=False,
+        help_text='Если установить дату и время в '
+        'будущем — можно делать отложенные публикации.',
+        blank=False)
     author = models.ForeignKey(User, verbose_name='Автор публикации',
                                on_delete=models.CASCADE,
                                related_name='posts',
@@ -106,21 +112,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post}"
-
-
-
-
-
-
-# category = Category.objects.create(name="Test Category")
-# location = Location.objects.create(name="Test Location")
-# user = User.objects.create(username="testuser")
-# post = Post.objects.create(
-#     title="Test Post",
-#     text="This is a test post",
-#     pub_date=timezone.now(),
-#     author=user,
-#     location=location,
-#     category=category,
-#     is_published=True
-# )
