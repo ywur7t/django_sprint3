@@ -34,18 +34,40 @@ def post_detail(request, id):
 
 def category_posts(request, category_slug):
 
-    category = get_object_or_404(Category,
-                                 slug=category_slug,
-                                 is_published=True)
+    # category = get_object_or_404(Category,
+    #                              slug=category_slug,
+    #                              is_published=True)
 
+    # posts = Post.objects.filter(
+    #     category=category,
+    #     is_published=True,
+    #     pub_date__lte=now()
+    # ).order_by('-pub_date')
+
+    # context = {
+    #     'category': category,
+    #     'posts': posts,
+    # }
+    # return render(request, 'blog/category.html', context)
+
+    # Получаем категорию или 404, если она не опубликована
+    category = get_object_or_404(
+        Category.objects.filter(is_published=True),
+        slug=category_slug
+    )
+
+    # Получаем опубликованные публикации этой категории,
+    # чья дата публикации не позже текущего времени
     posts = Post.objects.filter(
         category=category,
         is_published=True,
         pub_date__lte=now()
     ).order_by('-pub_date')
 
+    # Добавляем контекст
     context = {
         'category': category,
         'posts': posts,
     }
+
     return render(request, 'blog/category.html', context)
